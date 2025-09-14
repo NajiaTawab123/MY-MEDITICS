@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { FaFacebookF, FaTwitter, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -15,59 +16,87 @@ export default function Team() {
   ];
 
   return (
-    <section className="p-10 bg-gray-50">
-      {/* Hero Section */}
+    <section className="relative p-10 bg-gray-50 overflow-hidden">
+      {/* 🔹 Hero Section with Floating Elements */}
       <div className="relative bg-gradient-to-r from-blue-900 to-blue-950 text-white text-center py-20 overflow-hidden">
-        <div className="relative inline-block">
-          <img src="/cross.png" alt="cross" className="absolute -left-24 top-[60%] -translate-y-1/2 w-20 opacity-70" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Doctors</h1>
-        </div>
+        <motion.img
+          src="/cross.png"
+          alt="cross"
+          className="absolute -left-24 top-[60%] -translate-y-1/2 w-20 opacity-70"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold mb-4"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Meet Our Doctors
+        </motion.h1>
+        <p className="text-gray-300 text-lg">Dedicated professionals ready to care for you</p>
       </div>
 
-      {/* Team Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-        {doctors.map((doc) => (
-          <div
+      {/* 🔹 Team Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+        {doctors.map((doc, i) => (
+          <motion.div
             key={doc.id}
-            className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center transition-transform transform hover:scale-105 hover:shadow-2xl"
+            className="relative bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center group overflow-hidden"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: i * 0.2 }}
+            whileHover={{ scale: 1.05 }}
           >
             {/* Doctor Image */}
-            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-gray-200 mb-4 shadow-md">
+            <motion.div
+              className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-100 shadow-lg relative"
+              whileHover={{ scale: 1.1, rotate: 2 }}
+              transition={{ duration: 0.4 }}
+            >
               <img src={doc.img} alt={doc.name} className="w-full h-full object-cover" />
-            </div>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-400 to-transparent opacity-0 group-hover:opacity-30 transition"></div>
+            </motion.div>
 
             {/* Name & Specialization */}
-            <h3 className="text-lg md:text-xl font-semibold mb-1 text-gray-800">{doc.name}</h3>
+            <h3 className="text-lg md:text-xl font-semibold mt-4 text-gray-800">{doc.name}</h3>
             <p className="text-blue-600 mb-4">{doc.specialization}</p>
 
             {/* Social Icons */}
-            <div className="flex gap-4 mb-4">
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition">
-                <FaFacebookF size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition">
-                <FaWhatsapp size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition">
-                <FaTwitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-pink-500 transition">
-                <FaInstagram size={20} />
-              </a>
+            <div className="flex gap-4 mb-6">
+              {[FaFacebookF, FaWhatsapp, FaTwitter, FaInstagram].map((Icon, idx) => (
+                <motion.a
+                  key={idx}
+                  href="#"
+                  className="text-gray-400 hover:text-blue-600 transition"
+                  whileHover={{ scale: 1.3, rotate: 10 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Icon size={20} />
+                </motion.a>
+              ))}
             </div>
 
             {/* View Profile Button */}
             <Link
               to={`/team/${doc.id}`}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition shadow-md hover:shadow-lg"
+              className="relative bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition shadow-md hover:shadow-lg overflow-hidden"
             >
-              View Profile <ArrowRight className="w-5 h-5" />
+              <span className="relative z-10">View Profile</span>
+              <ArrowRight className="w-5 h-5 relative z-10" />
+              {/* Shiny Animation */}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 -skew-x-12 animate-[shimmer_2s_infinite]"></span>
             </Link>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <Footer />
+      {/* 🔹 Footer */}
+      <div className="mt-20">
+        <Footer />
+      </div>
     </section>
   );
 }
