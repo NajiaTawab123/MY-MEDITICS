@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+.clip-diagonal {
+  clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+}
+/* Smooth Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite;
+  width: max-content;
+}
+
