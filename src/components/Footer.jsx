@@ -29,7 +29,7 @@ export default function Footer() {
           {/* ✅ Logo Section */}
           <Link to="/" className="flex items-center gap-0">
             <img
-              src="heart.png"
+              src="/public/heart.png"
               alt="Meditics Logo"
               className="w-25 h-25 object-contain"
             />
